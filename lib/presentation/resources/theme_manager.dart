@@ -7,30 +7,30 @@ import 'font_manager.dart';
 
 ThemeData getApplicationTheme() {
   return ThemeData(
-      // Main color
-      primaryColor: ColorManager.primary,
-      primaryColorLight: ColorManager.lightPrimary,
-      primaryColorDark: ColorManager.darkPrimary,
-      disabledColor: ColorManager.grey,
-      splashColor: ColorManager.lightPrimary,
-      // ripple effect : Color display when u click on the button
-      // The fill color of the button when the button is disabled "before click it"
+    // Main color
+    primaryColor: ColorManager.primary,
+    primaryColorLight: ColorManager.lightPrimary,
+    primaryColorDark: ColorManager.darkPrimary,
+    disabledColor: ColorManager.grey,
+    splashColor: ColorManager.lightPrimary,
+    // ripple effect : Color display when u click on the button
+    // The fill color of the button when the button is disabled "before click it"
 
     // CardView Theme
     cardTheme: const CardTheme(
-        color: ColorManager.white,
-        shadowColor: ColorManager.grey,
-        elevation: AppSize.s4,
-      ),
-  // AppBar theme
-  appBarTheme: AppBarTheme(
-    centerTitle: true,
-    color: ColorManager.primary,
-    elevation: AppSize.s4,
-    shadowColor: ColorManager.lightPrimary,
-    titleTextStyle: getSemiBoldStyle(
-        fontSize: FontSize.s16, color: ColorManager.darkPrimary),
-  ),
+      color: ColorManager.white,
+      shadowColor: ColorManager.grey,
+      elevation: AppSize.s4,
+    ),
+    // AppBar theme
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      color: ColorManager.primary,
+      elevation: AppSize.s4, // This property controls the size of the shadow below the app bar if shadowColor is not null.
+      shadowColor: ColorManager.lightPrimary,
+      titleTextStyle: getSemiBoldStyle(
+          fontSize: FontSize.s16, color: ColorManager.darkPrimary),
+    ),
     // Button theme
     buttonTheme: const ButtonThemeData(
       shape: StadiumBorder(),
@@ -41,12 +41,12 @@ ThemeData getApplicationTheme() {
     // Elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        textStyle: getRegularStyle(
-            color: ColorManager.white,
-        fontSize: FontSize.s17)
+          textStyle: getRegularStyle(
+              color: ColorManager.white,
+              fontSize: FontSize.s17)
       ),
     ),
-    
+
     // Text Theme
     // The names of the 2018 TextTheme properties match this table from the Material Design spec with two exceptions: the styles called H1-H6 in the spec are headline1-headline6 in the API, and body1,body2 are called bodyText1 and bodyText2.
     // Don't use it
@@ -66,17 +66,62 @@ ThemeData getApplicationTheme() {
     // button       14.0  medium   1.25
     // caption      12.0  regular  0.4
     // overline     10.0  regular  1.5
-    
+
     textTheme: TextTheme(
-      displayLarge: getSemiBoldStyle(color: ColorManager.darkGrey, fontSize: FontSize.s16 ),
-      headlineLarge: getBoldStyle(color: ColorManager.primary, fontSize: FontSize.s18),
-      headlineMedium: getRegularStyle(color: ColorManager.darkGrey, fontSize: FontSize.s14),
-      displayMedium: getMediumStyle(color: ColorManager.darkGrey,fontSize: FontSize.s16),
-      titleMedium: getMediumStyle(color: ColorManager.lightGrey, fontSize: FontSize.s16),
+      displayLarge: getSemiBoldStyle(
+          color: ColorManager.darkGrey, fontSize: FontSize.s16),
+      headlineLarge: getBoldStyle(
+          color: ColorManager.primary, fontSize: FontSize.s18),
+      headlineMedium: getRegularStyle(
+          color: ColorManager.darkGrey, fontSize: FontSize.s14),
+      displayMedium: getMediumStyle(
+          color: ColorManager.darkGrey, fontSize: FontSize.s16),
+      titleMedium: getMediumStyle(
+          color: ColorManager.lightGrey, fontSize: FontSize.s16),
       bodyLarge: getRegularStyle(color: ColorManager.grey1),
       bodySmall: getRegularStyle(color: ColorManager.grey),
     ),
-    
-  );
 
+    // Input decoration theme (text form field)
+    inputDecorationTheme: InputDecorationTheme(
+      // Content padding
+      contentPadding: const EdgeInsets.all(AppPadding.p8),
+      // Hint style
+      hintStyle: getRegularStyle(
+          color: ColorManager.darkGrey, fontSize: FontSize.s14),
+      labelStyle: getMediumStyle(
+          color: ColorManager.grey, fontSize: FontSize.s14),
+      errorStyle: getRegularStyle(color: ColorManager.error),
+
+      // Enabled border style
+      enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+              color: ColorManager.primary, width: AppBorder.b1_5),
+          borderRadius: BorderRadius.all(Radius.circular(AppBorder.b8))
+      ),
+
+      // Focused border style
+      focusedBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+            color: ColorManager.grey,
+            width: AppBorder.b1_5),
+      ),
+
+      // Error border style
+      errorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+              color: ColorManager.error, width: AppBorder.b1_5),
+          borderRadius: BorderRadius.all(Radius.circular(AppBorder.b8))),
+
+      // Focused border style
+      focusedErrorBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+              color: ColorManager.primary, width: AppBorder.b8
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(AppBorder.b8))
+      ),
+
+
+    ),
+  );
 }

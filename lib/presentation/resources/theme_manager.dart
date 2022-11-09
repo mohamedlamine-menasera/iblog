@@ -27,17 +27,19 @@ ThemeData getApplicationTheme() {
       centerTitle: true,
       color: ColorManager.primary,
       elevation: AppSize.s4, // This property controls the size of the shadow below the app bar if shadowColor is not null.
-      shadowColor: ColorManager.lightPrimary,
+      //shadowColor: ColorManager.lightPrimary,
       titleTextStyle: getSemiBoldStyle(
-          fontSize: FontSize.s16, color: ColorManager.darkPrimary),
+          fontSize: FontSize.s16, color: ColorManager.white),
     ),
     // Button theme
-    buttonTheme: const ButtonThemeData(
+    buttonTheme:  const ButtonThemeData(
       shape: StadiumBorder(),
       buttonColor: ColorManager.primary,
       disabledColor: ColorManager.grey1,
       splashColor: ColorManager.lightPrimary,
+      textTheme: ButtonTextTheme.primary,
     ),
+
     // Elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

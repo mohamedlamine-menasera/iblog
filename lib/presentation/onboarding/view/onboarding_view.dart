@@ -9,8 +9,8 @@ import 'package:iblog/presentation/resources/routes_manager.dart';
 import 'package:iblog/presentation/resources/strings_manager.dart';
 import 'package:iblog/presentation/resources/value_manager.dart';
 
-import '../../domain/models/models.dart';
-import '../resources/constants_manager.dart';
+import '../../../domain/models/models.dart';
+import '../../resources/constants_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({Key? key}) : super(key: key);
@@ -21,21 +21,10 @@ class OnBoardingView extends StatefulWidget {
 
 class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController _pageController = PageController();
-  int _currentIndex = 0;
 
-  // Create a lists of Pages
-  late final List<SliderObject> _list = _getSliderObject();
 
-  List<SliderObject> _getSliderObject() => [
-    SliderObject(AppStrings.onBoardingTitle1,
-        AppStrings.onBoardingSubTitle1, ImageAssets.onboardingLogo1),
-    SliderObject(AppStrings.onBoardingTitle2,
-        AppStrings.onBoardingSubTitle2, ImageAssets.onboardingLogo2),
-    SliderObject(AppStrings.onBoardingTitle3,
-        AppStrings.onBoardingSubTitle3, ImageAssets.onboardingLogo3),
-    SliderObject(AppStrings.onBoardingTitle4,
-        AppStrings.onBoardingSubTitle4, ImageAssets.onboardingLogo4),
-  ];
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +159,13 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     }
     return nextIndex;
   }
+  @override
+  void dispose() {
+    // TODO: viewModel dispose
+    super.dispose();
+  }
 }
+
 
 class OnBoardingPage extends StatelessWidget {
   final SliderObject _sliderObject;

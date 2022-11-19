@@ -3,7 +3,7 @@ import 'package:iblog/presentation/resources/strings_manager.dart';
 
 import '../forgot_password/forgot_password_view.dart';
 import '../main/main.dart';
-import '../onboarding/onboarding_view.dart';
+import '../onboarding/view/onboarding_view.dart';
 import '../register/register_view.dart';
 import '../splash/splash_view.dart';
 import '../login/login_view.dart';

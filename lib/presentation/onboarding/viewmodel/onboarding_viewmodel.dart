@@ -10,25 +10,34 @@ class OnboardingViewModel extends BaseViewModel with OnboardingViewModelInputs,O
 
   late final List<SliderObject> _list;
   // Stream controller outputs
-  StreamController _streamController = StreamController<SliderViewObject>();
+  final StreamController _streamController = StreamController<SliderViewObject>();
   // example for check password
   StreamController _isPasswordstreamController = StreamController<bool>();
 
   int _currentIndex = 0;
 
   @override
-  void goNext() {
-    // TODO: implement goNext
+  int goNext() {
+      int nextIndex = ++_currentIndex;
+      if (nextIndex == _list.length) {
+        nextIndex = 0;
+      }
+      return nextIndex;
   }
 
   @override
-  void goPrevious() {
-    // TODO: implement goPrevious
+  int goPrevious() {
+    int previousIndex = --_currentIndex;
+    if (previousIndex == -1) {
+      previousIndex = _list.length - 1;
+    }
+    return previousIndex;
   }
 
   @override
   void onPageChanged(int index) {
-    // TODO: implement onPageChanged
+    _currentIndex = index;
+    _postDataToView();
   }
 
   @override
@@ -97,8 +106,8 @@ class OnboardingViewModel extends BaseViewModel with OnboardingViewModelInputs,O
 }
 
 abstract class OnboardingViewModelInputs{
-  void goNext(); // when user clicks on right arrow or swipe left
-  void goPrevious(); // when user clicks on left arrow or swipe right
+  int goNext(); // when user clicks on right arrow or swipe left
+  int goPrevious(); // when user clicks on left arrow or swipe right
   void onPageChanged(int index);
   // stream controller input
   Sink get inputSliderViewObject;

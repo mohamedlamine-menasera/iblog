@@ -11,6 +11,7 @@ import 'package:iblog/presentation/resources/value_manager.dart';
 
 import '../../../domain/models/models.dart';
 import '../../resources/constants_manager.dart';
+import '../viewmodel/onboarding_viewmodel.dart';
 
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({Key? key}) : super(key: key);
@@ -21,60 +22,82 @@ class OnBoardingView extends StatefulWidget {
 
 class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController _pageController = PageController();
+  final OnboardingViewModel _viewModel = OnboardingViewModel();
 
+  _bind() {
+    _viewModel.start();
+  }
 
-
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    _bind();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      appBar: AppBar(
-        // this for up system-bar "WIFI,Network,Time.."
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: ColorManager.white, // For the bar
-          statusBarBrightness: Brightness.dark, // for the icons
-        ),
-        backgroundColor: ColorManager.white,
-        elevation: AppSize.s0,
-      ),
-      body: PageView.builder(
-        controller: _pageController,
-        itemCount: _list.length,
-        onPageChanged: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        itemBuilder: (context, index) {
-          return OnBoardingPage(_list[index]);
-        },
-      ),
-      bottomSheet: Container(
-        color: ColorManager.white,
-        child: Column(
-            mainAxisSize: MainAxisSize.min, // take the size of the sidebar only
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, Routes.loginRoute);
-                  },
-                  child: const Text(
-                    AppStrings.skip,
-                    textAlign: TextAlign.end,
-                  ),
-                ),
-              ),
-              _getBottomSheetWidget(),
-            ]),
-      ),
-    );
+    return StreamBuilder<SliderViewObject>(
+        stream: _viewModel.outputSliderViewObject,
+        builder: (context, snapshot) {
+          return _getContentWidget(snapshot.data);
+        });
   }
 
-  Widget _getBottomSheetWidget() {
+  Widget _getContentWidget(SliderViewObject? sliderViewObject) {
+    if (sliderViewObject == null) {
+      return Container();
+    } else {
+      return Scaffold(
+        backgroundColor: ColorManager.white,
+        appBar: AppBar(
+          // this for up system-bar "WIFI,Network,Time.."
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: ColorManager.white, // For the bar
+            statusBarBrightness: Brightness.dark, // for the icons
+          ),
+          backgroundColor: ColorManager.white,
+          elevation: AppSize.s0,
+        ),
+        body: PageView.builder(
+          controller: _pageController,
+          itemCount: sliderViewObject.numOfSlides,
+          onPageChanged: (index) {
+            setState(() {
+              _viewModel.onPageChanged(index);
+            });
+          },
+          itemBuilder: (context, index) {
+            return OnBoardingPage(sliderViewObject.sliderObject);
+          },
+        ),
+        bottomSheet: Container(
+          color: ColorManager.white,
+          child: Column(
+              mainAxisSize: MainAxisSize.min,
+              // take the size of the sidebar only
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, Routes.loginRoute);
+                    },
+                    child: const Text(
+                      AppStrings.skip,
+                      textAlign: TextAlign.end,
+                    ),
+                  ),
+                ),
+                _getBottomSheetWidget(sliderViewObject),
+              ]),
+        ),
+      );
+    }
+  }
+
+  Widget _getBottomSheetWidget(SliderViewObject sliderViewObject) {
     return Container(
       color: ColorManager.darkPrimary,
       child: Row(
@@ -92,7 +115,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               ),
               onTap: () {
                 // Go to previous slide
-                _pageController.animateToPage(_getPreviousIndex(),
+                _pageController.animateToPage(_viewModel.goPrevious(),
                     duration: const Duration(
                         milliseconds: AppConstants.sliderAnimationTime),
                     curve: Curves.bounceInOut);
@@ -103,10 +126,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           // Circle indicator
           Row(
             children: [
-              for (int i = 0; i < _list.length; i++)
+              for (int i = 0; i < sliderViewObject.numOfSlides; i++)
                 Padding(
                   padding: const EdgeInsets.all(AppPadding.p8),
-                  child: _getProperCircle(i),
+                  child: _getProperCircle(i,sliderViewObject.currentIndex),
                 ),
             ],
           ),
@@ -122,7 +145,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               ),
               onTap: () {
                 // Go to previous slide
-                _pageController.animateToPage(_getNextIndex(),
+                _pageController.animateToPage(_viewModel.goNext(),
                     duration: const Duration(
                         milliseconds: AppConstants.sliderAnimationTime),
                     curve: Curves.bounceInOut);
@@ -134,38 +157,23 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     );
   }
 
-  Widget _getProperCircle(int index) {
-    log("Index number is: $index");
-    log("Current Index number is: $_currentIndex");
-    if (index == _currentIndex) {
+  Widget _getProperCircle(int index, int currentIndex) {
+    // log("Index number is: $index");
+    // log("Current Index number is: $_currentIndex");
+    if (index == currentIndex) {
       return SvgPicture.asset(ImageAssets.hollowCircleIc);
     } else {
       return SvgPicture.asset(ImageAssets.solidCircleIc);
     }
   }
 
-  int _getPreviousIndex() {
-    int previousIndex = --_currentIndex;
-    if (previousIndex == -1) {
-      previousIndex = _list.length - 1;
-    }
-    return previousIndex;
-  }
-
-  int _getNextIndex() {
-    int nextIndex = ++_currentIndex;
-    if (nextIndex == _list.length) {
-      nextIndex = 0;
-    }
-    return nextIndex;
-  }
   @override
   void dispose() {
     // TODO: viewModel dispose
+    _viewModel.dispose();
     super.dispose();
   }
-}
-
+}}
 
 class OnBoardingPage extends StatelessWidget {
   final SliderObject _sliderObject;
@@ -183,7 +191,10 @@ class OnBoardingPage extends StatelessWidget {
           child: Text(
             _sliderObject.title,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displayLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .displayLarge,
           ),
         ),
         Padding(
@@ -191,7 +202,10 @@ class OnBoardingPage extends StatelessWidget {
           child: Text(
             _sliderObject.subTitle,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headlineMedium,
           ),
         ),
         const SizedBox(height: AppSize.s60),
@@ -200,4 +214,3 @@ class OnBoardingPage extends StatelessWidget {
     );
   }
 }
-

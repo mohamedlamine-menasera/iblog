@@ -33,6 +33,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     // TODO: implement initState
     _bind();
     super.initState();
+
   }
 
   @override
@@ -144,6 +145,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 child: SvgPicture.asset(ImageAssets.rightArrowIc),
               ),
               onTap: () {
+
                 // Go to previous slide
                 _pageController.animateToPage(_viewModel.goNext(),
                     duration: const Duration(
@@ -173,7 +175,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     _viewModel.dispose();
     super.dispose();
   }
-}}
+}
 
 class OnBoardingPage extends StatelessWidget {
   final SliderObject _sliderObject;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:iblog/domain/models/models.dart';
 import 'package:iblog/presentation/data/baseviewmodel.dart';
@@ -10,9 +11,9 @@ class OnboardingViewModel extends BaseViewModel with OnboardingViewModelInputs,O
 
   late final List<SliderObject> _list;
   // Stream controller outputs
-  final StreamController _streamController = StreamController<SliderViewObject>();
+  final StreamController<SliderViewObject> _streamController = StreamController<SliderViewObject>();
   // example for check password
-  StreamController _isPasswordstreamController = StreamController<bool>();
+  //StreamController _isPasswordstreamController = StreamController<bool>();
 
   int _currentIndex = 0;
 
@@ -38,6 +39,7 @@ class OnboardingViewModel extends BaseViewModel with OnboardingViewModelInputs,O
   void onPageChanged(int index) {
     _currentIndex = index;
     _postDataToView();
+    // outputSliderViewObject.listen((event) {log("Stream is $event");});
   }
 
   @override
@@ -45,7 +47,7 @@ class OnboardingViewModel extends BaseViewModel with OnboardingViewModelInputs,O
     // TODO: implement dispose
     _streamController.close();
     // example for check password
-    _isPasswordstreamController.close();
+    //_isPasswordstreamController.close();
   }
 
   @override
@@ -57,7 +59,7 @@ class OnboardingViewModel extends BaseViewModel with OnboardingViewModelInputs,O
     _list = _getSliderObject();
     _postDataToView();
     // example for check password
-    inputIsPasswordValid.add("123456");
+    //inputIsPasswordValid.add("123456");
   }
 
 
@@ -85,24 +87,24 @@ class OnboardingViewModel extends BaseViewModel with OnboardingViewModelInputs,O
   // TODO: implement outputSliderViewObject
   Stream<SliderViewObject> get outputSliderViewObject => _streamController.stream.map((sliderViewObject) => sliderViewObject);
 
-   // example for check password
+//    // example for check password
+//
+//   @override
+//   // TODO: implement inputIsPasswordValid
+//   Sink get inputIsPasswordValid => _isPasswordstreamController.sink;
+//
+//   @override
+//   // TODO: implement outputIsPasswordValid
+//   Stream<bool> get outputIsPasswordValid => _isPasswordstreamController.stream.map((password) => _isPasswordValid(inputIsPasswordValid.toString()));
+// // example for check password
+//   bool _isPasswordValid(String password){
+//     if (password.length >8) {
+//       return true;
+//     } else {
+//       return false;
+//     }
 
-  @override
-  // TODO: implement inputIsPasswordValid
-  Sink get inputIsPasswordValid => _isPasswordstreamController.sink;
-
-  @override
-  // TODO: implement outputIsPasswordValid
-  Stream<bool> get outputIsPasswordValid => _isPasswordstreamController.stream.map((password) => _isPasswordValid(inputIsPasswordValid.toString()));
-// example for check password
-  bool _isPasswordValid(String password){
-    if (password.length >8) {
-      return true;
-    } else {
-      return false;
-    }
-
-  }
+ // }
 }
 
 abstract class OnboardingViewModelInputs{
@@ -112,11 +114,11 @@ abstract class OnboardingViewModelInputs{
   // stream controller input
   Sink get inputSliderViewObject;
   // example for check password
-  Sink get inputIsPasswordValid;
+  //Sink get inputIsPasswordValid;
 }
 
 abstract class OnboardingViewModelOutputs{
   Stream<SliderViewObject> get outputSliderViewObject;
   // example for check password
-  Stream<bool> get outputIsPasswordValid;
+  //Stream<bool> get outputIsPasswordValid;
 }
